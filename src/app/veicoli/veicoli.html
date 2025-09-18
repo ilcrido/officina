@@ -1,1 +1,46 @@
-<p>veicoli works!</p>
+<div>
+  <h2>Gestione Veicoli</h2>
+
+  <!-- Form per aggiungere veicolo -->
+  <div class="form-section">
+    <h3>Nuovo Veicolo</h3>
+    <div class="form-group">
+      <label>Targa:</label>
+      <input type="text" [(ngModel)]="nuovoVeicolo.targa" placeholder="Es: AB123CD">
+    </div>
+    <div class="form-group">
+      <label>Marca:</label>
+      <input type="text" [(ngModel)]="nuovoVeicolo.marca" placeholder="Es: Fiat">
+    </div>
+    <div class="form-group">
+      <label>Modello:</label>
+      <input type="text" [(ngModel)]="nuovoVeicolo.modello" placeholder="Es: Punto">
+    </div>
+    <div class="form-group">
+      <label>Anno:</label>
+      <input type="number" [(ngModel)]="nuovoVeicolo.anno" placeholder="Es: 2015">
+    </div>
+    <div class="form-group">
+      <label>Proprietario:</label>
+      <select [(ngModel)]="nuovoVeicolo.proprietarioId">
+        <option value="">Seleziona proprietario</option>
+        @for (cliente of clienti; track cliente.id) {
+          <option [value]="cliente.id">{{cliente.nome}} {{cliente.cognome}}</option>
+        }
+      </select>
+    </div>
+    <button class="btn" (click)="aggiungiVeicolo()">Aggiungi Veicolo</button>
+  </div>
+
+  <!-- Lista veicoli -->
+  <div class="client-list">
+    <h3>Veicoli Registrati</h3>
+    @for (veicolo of veicoli; track veicolo.id) {
+      <div class="client-item">
+        <strong>{{veicolo.marca}} {{veicolo.modello}} ({{veicolo.anno}})</strong><br>
+        Targa: {{veicolo.targa}}<br>
+        Proprietario: {{veicolo.proprietario?.nome}} {{veicolo.proprietario?.cognome}}
+      </div>
+    }
+  </div>
+</div>

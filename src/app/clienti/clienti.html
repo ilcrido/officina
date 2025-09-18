@@ -1,1 +1,32 @@
-<p>clienti works!</p>
+<div>
+  <h2>Gestione Clienti</h2>
+
+  <!-- Form per aggiungere cliente -->
+  <div class="form-section">
+    <h3>Nuovo Cliente</h3>
+    <div class="form-group">
+      <label>Nome:</label>
+      <input type="text" [(ngModel)]="nuovoCliente.nome" placeholder="Inserisci nome">
+    </div>
+    <div class="form-group">
+      <label>Cognome:</label>
+      <input type="text" [(ngModel)]="nuovoCliente.cognome" placeholder="Inserisci cognome">
+    </div>
+    <div class="form-group">
+      <label>Telefono:</label>
+      <input type="text" [(ngModel)]="nuovoCliente.telefono" placeholder="Inserisci telefono">
+    </div>
+    <button class="btn" (click)="aggiungiCliente()">Aggiungi Cliente</button>
+  </div>
+
+  <!-- Lista clienti -->
+  <div class="client-list">
+    <h3>Clienti Registrati</h3>
+    @for (cliente of clienti; track cliente.id) {
+      <div class="client-item">
+        <strong>{{cliente.nome}} {{cliente.cognome}}</strong><br>
+        Tel: {{cliente.telefono}}
+      </div>
+    }
+  </div>
+</div>

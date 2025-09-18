@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { Routes } from '@angular/router';
 
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
-})
-export class AppComponent {
-  title = 'frontend';
-}
+export const routes: Routes = [
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  {
+    path: 'dashboard',
+    loadComponent: () => import('./dashboard/dashboard').then(c => c.Dashboard)
+  },
+  {
+    path: 'clienti',
+    loadComponent: () => import('./clienti/clienti').then(c => c.Clienti)
+  },
+  {
+    path: 'veicoli',
+    loadComponent: () => import('./veicoli/veicoli').then(c => c.Veicoli)
+  },
+  {
+    path: 'ordini',
+    loadComponent: () => import('./ordini-lavoro/ordini-lavoro').then(c => c.OrdiniLavoro)
+  }
+];

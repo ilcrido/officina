@@ -1,1 +1,93 @@
-<p>ordini-lavoro works!</p>
+<div>
+  <h2>Gestione Ordini di Lavoro</h2>
+
+  <!-- Form nuovo ordine -->
+  <div class="form-section">
+    <h3>Nuovo Ordine</h3>
+    <div class="form-group">
+      <label>Veicolo:</label>
+      <select [(ngModel)]="nuovoOrdine.veicolo.id">
+        <option value="">Seleziona veicolo</option>
+        @for (veicolo of veicoli; track veicolo.id) {
+          <option [value]="veicolo.id">{{veicolo.targa}} - {{veicolo.marca}} {{veicolo.modello}}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Meccanico:</label>
+      <select [(ngModel)]="nuovoOrdine.meccanico.id">
+        <option value="">Seleziona meccanico</option>
+        @for (meccanico of meccanici; track meccanico.id) {
+          <option [value]="meccanico.id">{{meccanico.nome}} {{meccanico.cognome}}</option>
+        }
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Note:</label>
+      <input type="text" [(ngModel)]="nuovoOrdine.note" placeholder="Note opzionali">
+    </div>
+    <button class="btn" (click)="creaOrdine()" [disabled]="!nuovoOrdine.veicolo.id || !nuovoOrdine.meccanico.id">
+      Crea Ordine
+    </button>
+  </div>
+
+  <!-- Lista ordini -->
+  <div class="client-list">
+    <h3>Ordini di Lavoro</h3>
+    @if (ordini.length === 0) {
+      <p>Nessun ordine di lavoro presente.</p>
+    } @else {
+      @for (ordine of ordini; track ordine.id) {
+        <div class="client-item">
+          <strong>Ordine #{{ordine.id}} - {{ordine.stato}}</strong><br>
+          Veicolo: {{ordine.veicolo?.targa}} - {{ordine.veicolo?.marca}} {{ordine.veicolo?.modello}}<br>
+          Cliente: {{ordine.veicolo?.proprietario?.nome}} {{ordine.veicolo?.proprietario?.cognome}}<br>
+          Meccanico: {{ordine.meccanico?.nome}} {{ordine.meccanico?.cognome}}<br>
+          Totale: €{{ordine.totale || 0}}<br>
+          Data inizio: {{ordine.dataInizio | date:'dd/MM/yyyy HH:mm'}}<br>
+          @if (ordine.note) {
+            <small>Note: {{ordine.note}}</small><br>
+          }
+          @if (ordine.dataFine) {
+            Data fine: {{ordine.dataFine | date:'dd/MM/yyyy HH:mm'}}
+          }
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Sezione per aggiungere lavori a un ordine esistente -->
+  @if (ordineSelezionato) {
+    <div class="form-section" style="margin-top: 30px;">
+      <h3>Aggiungi Lavoro - Ordine #{{ordineSelezionato.id}}</h3>
+      <div class="form-group">
+        <label>Descrizione lavoro:</label>
+        <input type="text" [(ngModel)]="nuovoLavoro.descrizione" placeholder="Es: Cambio olio motore">
+      </div>
+      <div class="form-group">
+        <label>Pezzo/Materiale:</label>
+        <input type="text" [(ngModel)]="nuovoLavoro.pezzo" placeholder="Es: Olio Shell 5W30 - 4L">
+      </div>
+      <div class="form-group">
+        <label>Prezzo (€):</label>
+        <input type="number" [(ngModel)]="nuovoLavoro.prezzo" placeholder="25">
+      </div>
+      <button class="btn" (click)="aggiungiLavoro()">Aggiungi Lavoro</button>
+      <button class="btn btn-secondary" (click)="annullaLavoro()">Annulla</button>
+    </div>
+  }
+
+  <!-- Bottoni per selezionare ordine -->
+  @if (!ordineSelezionato && ordini.length > 0) {
+    <div style="margin-top: 20px;">
+      <h3>Aggiungi lavori a un ordine:</h3>
+      @for (ordine of ordini; track ordine.id) {
+        @if (ordine.stato === 'IN_CORSO') {
+          <button class="btn btn-secondary" (click)="selezionaOrdine(ordine)" style="margin: 5px;">
+            Ordine #{{ordine.id}} ({{ordine.veicolo?.targa}})
+          </button>
+        }
+      }
+    </div>
+  }
+</div>
